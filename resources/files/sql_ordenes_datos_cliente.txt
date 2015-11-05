@@ -1,0 +1,6 @@
+Select address.firstname, address.lastname, address.address1, address.address2,
+address.city, country.name, address.postcode, address.phone
+from ps_pdt_address address , ps_pdt_country_lang country
+where address.id_address = ? and
+address.id_country = country.id_country and
+country.id_lang = 3

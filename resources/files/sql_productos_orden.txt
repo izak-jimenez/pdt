@@ -1,0 +1,2 @@
+Select product_reference, product_quantity from ps_pdt_order_detail
+where id_order = ?

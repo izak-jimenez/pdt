@@ -1,0 +1,4 @@
+Select * from ps_pdt_orders orders
+where not exists (select * from ps_pdt_orders_ctrl control
+where orders.id_order = control.id_order)
+and orders.current_state = 2
