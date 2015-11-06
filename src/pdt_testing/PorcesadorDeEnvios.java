@@ -43,7 +43,7 @@ public class PorcesadorDeEnvios {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(xmlStockFile);
-            //doc.getDocumentElement().normalize();
+            doc.getDocumentElement().normalize();
             
             // Ya que se tiene el archivo XML se procesa y se obtienen el id del pedido y el no. de guía
             NodeList nodosIdPedido = doc.getElementsByTagName("PEDIDO");
@@ -51,17 +51,21 @@ public class PorcesadorDeEnvios {
             
             if(nodosIdPedido != null){
                 idPedido = Integer.parseInt(nodosIdPedido.item(0).getTextContent().trim());
+            }else{
+                MainGUI.logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El id del pedido está vacío!");
             }
             
             if(nodosGuiaEmbarque != null){
                 guiaEmbarque = nodosGuiaEmbarque.item(0).getTextContent().trim();
+            }else{
+                MainGUI.logScreen.append("\n" + new Timestamp(new Date().getTime()) + " La guía de embarque está vacía!");
             }
             
             // Ya que se tienen los datos necesarios, se actualiza la base de datos
             String dbServer = pdtDBSettings.getProperty("server", "localhost");
             String dbUsr = pdtDBSettings.getProperty("user", "");
             Validacion val = new Validacion();
-            String pwdDB = val.validaPass(pdtDBSettings.getProperty("password", "")); //"mR1ch%2B%25O92na";
+            String pwdDB = val.validaPass(pdtDBSettings.getProperty("password", "")); 
             String dbNom = pdtDBSettings.getProperty("database", "");
             DBConn db = new DBConn(dbServer, dbUsr, pwdDB, dbNom);
             db.startConnection();
