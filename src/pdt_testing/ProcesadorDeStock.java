@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.SwingWorker;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -24,7 +25,7 @@ import static pdt_testing.MainGUI.pdtDBSettings;
  *
  * @author Josué Isaac Jiménez Ortiz
  */
-public class ProcesadorDeStock {
+public class ProcesadorDeStock  extends SwingWorker<Void, String>{
 
     private ArrayList productoRef, productoCantidad;
     private final String tablePrefix = pdtDBSettings.getProperty("prefix", "ps_pzrqs94mkk5vk6d");
@@ -51,7 +52,7 @@ public class ProcesadorDeStock {
                 if(tmpList.item(j).getNodeName().equals("#text")){
                     // No sirve este nodo
                 }
-                else if(tmpList.item(j).getNodeName().equals("EAN_UPC")){
+                else if(tmpList.item(j).getNodeName().equals("EAN_SKU")){
                     productoRef.add(tmpList.item(j).getTextContent());
                 }
                 else if(tmpList.item(j).getNodeName().equals("CANTIDAD")){
@@ -97,6 +98,11 @@ public class ProcesadorDeStock {
                     
                     int updateOrderUpdate = db.updateQuery(queryUpdate);
                     MainGUI.logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Registros afectados por el UPDATE: " + updateOrderUpdate);
+                    String queryUpdate2 = "update " + tablePrefix + "stock_available\n" +
+                                         "set quantity = quantity + " + Integer.parseInt(productoCantidad.get(i).toString()) + "\n" +
+                                         "where id_product = " + updateProductSelect.getString(1) + " and id_product_attribute = 0";
+                    int updateOrderUpdate2 = db.updateQuery(queryUpdate2);
+                    MainGUI.logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Registros afectados por el UPDATE: " + updateOrderUpdate2);
                     db.getConnection().commit();// Finaliza la transacción
                 }
                 
@@ -107,5 +113,10 @@ public class ProcesadorDeStock {
         
         System.out.println(productoRef);
         System.out.println(productoCantidad);
+    }
+
+    @Override
+    protected Void doInBackground() throws Exception {
+        return null;
     }
 }
