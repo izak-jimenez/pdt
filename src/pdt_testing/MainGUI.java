@@ -75,13 +75,12 @@ public class MainGUI extends javax.swing.JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 thisFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-                int confirmed = JOptionPane.showConfirmDialog(null,"¿Estas seguro que deseas salir de la aplicación?", "Salir?",JOptionPane.YES_NO_OPTION);
+                int confirmed = JOptionPane.showConfirmDialog(null, "¿Estas seguro que deseas salir de la aplicación?", "Salir?", JOptionPane.YES_NO_OPTION);
                 if (confirmed == JOptionPane.YES_OPTION) {
                     dispose();
                     System.exit(0);
-                }
-                else if(confirmed == JOptionPane.NO_OPTION){
-                    
+                } else if (confirmed == JOptionPane.NO_OPTION) {
+
                 }
             }
         });
@@ -776,42 +775,41 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void btnSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSettingsActionPerformed
         // Solo se abre la configuración si no se está ejecutando ningún proceso
-        if(!btnMasda.isSelected() && !btnOrders.isSelected() && !btnShipping.isSelected() && !btnStocks.isSelected()){
+        if (!btnMasda.isSelected() && !btnOrders.isSelected() && !btnShipping.isSelected() && !btnStocks.isSelected()) {
             // New internal jdialog test
-        menuConfig.pack();
-        setLocationRelativeTo(null);
-        menuConfig.setTitle("Configuración");
-        menuConfig.setVisible(true);
-        
-        // Si no existe el directorio PDT ni los archivos de configuración, entonces los crea.
-        if(!(new File("C:\\PDT").exists())){
-            new File("C:\\PDT").mkdir();
-            try {
-                ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-                // Utiliza los archivos de configuración predeterminados que se encuentran dentro de la carpeta de recursos.
-                InputStream iStreamFTP = classloader.getResourceAsStream("files/pdt_ftp_settings.properties"); // archivo de config ftp
-                InputStream iStreamDB = classloader.getResourceAsStream("files/pdt_db_settings.properties"); // archivo de config db
-                OutputStream outputStreamFTP = new FileOutputStream(new File("C:\\PDT\\pdt_ftp_settings.properties")); // stream de escritura para archivo config ftp
-                OutputStream outputStreamDB = new FileOutputStream(new File("C:\\PDT\\pdt_db_settings.properties")); // stream de escritura para archivo config db
-                int read = 0;
-		byte[] bytes = new byte[1024];
+            menuConfig.pack();
+            setLocationRelativeTo(null);
+            menuConfig.setTitle("Configuración");
+            menuConfig.setVisible(true);
 
-		while (((read = iStreamFTP.read(bytes)) != -1) && ((read = iStreamDB.read(bytes)) != -1)) {
-			outputStreamFTP.write(bytes, 0, read);
+            // Si no existe el directorio PDT ni los archivos de configuración, entonces los crea.
+            if (!(new File("C:\\PDT").exists())) {
+                new File("C:\\PDT").mkdir();
+                try {
+                    ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+                    // Utiliza los archivos de configuración predeterminados que se encuentran dentro de la carpeta de recursos.
+                    InputStream iStreamFTP = classloader.getResourceAsStream("files/pdt_ftp_settings.properties"); // archivo de config ftp
+                    InputStream iStreamDB = classloader.getResourceAsStream("files/pdt_db_settings.properties"); // archivo de config db
+                    OutputStream outputStreamFTP = new FileOutputStream(new File("C:\\PDT\\pdt_ftp_settings.properties")); // stream de escritura para archivo config ftp
+                    OutputStream outputStreamDB = new FileOutputStream(new File("C:\\PDT\\pdt_db_settings.properties")); // stream de escritura para archivo config db
+                    int read = 0;
+                    byte[] bytes = new byte[1024];
+
+                    while (((read = iStreamFTP.read(bytes)) != -1) && ((read = iStreamDB.read(bytes)) != -1)) {
+                        outputStreamFTP.write(bytes, 0, read);
                         outputStreamDB.write(bytes, 0, read);
-		}
-                
-                iStreamFTP.close();
-                iStreamDB.close();
-                outputStreamFTP.close();
-                outputStreamDB.close();
+                    }
 
-            } catch (Exception ex) {
-                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        // Si el directorio existe pero los archivos de configuración no, entonces los crea sin valores.
-        else if((!(new File("C:\\PDT\\pdt_ftp_settings.properties").exists())) && (!(new File("C:\\PDT\\pdt_db_settings.properties").exists())) && (!(new File("C:\\PDT\\pdt_app_settings.properties").exists()))){
+                    iStreamFTP.close();
+                    iStreamDB.close();
+                    outputStreamFTP.close();
+                    outputStreamDB.close();
+
+                } catch (Exception ex) {
+                    Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } // Si el directorio existe pero los archivos de configuración no, entonces los crea sin valores.
+            else if ((!(new File("C:\\PDT\\pdt_ftp_settings.properties").exists())) && (!(new File("C:\\PDT\\pdt_db_settings.properties").exists())) && (!(new File("C:\\PDT\\pdt_app_settings.properties").exists()))) {
                 try {
                     ClassLoader classloader = Thread.currentThread().getContextClassLoader();
                     // Utiliza los archivos de configuración predeterminados que se encuentran dentro de la carpeta de recursos.
@@ -825,18 +823,18 @@ public class MainGUI extends javax.swing.JFrame {
                     byte[] bytes = new byte[1024];
 
                     while (((read = iStreamFTP.read(bytes)) != -1) && ((read = iStreamDB.read(bytes)) != -1) && ((read = iStreamApp.read(bytes)) != -1)) {
-                            outputStreamFTP.write(bytes, 0, read);
-                            outputStreamDB.write(bytes, 0, read);
-                            outputStreamApp.write(bytes, 0, read);
+                        outputStreamFTP.write(bytes, 0, read);
+                        outputStreamDB.write(bytes, 0, read);
+                        outputStreamApp.write(bytes, 0, read);
                     }
-                
+
                     iStreamFTP.close();
                     iStreamDB.close();
                     iStreamApp.close();
                     outputStreamApp.close();
                     outputStreamFTP.close();
                     outputStreamDB.close();
-                    
+
                     // Escritura de parámetros vacíos de configuración para el servidor FTP
                     File pdtFTPSettingsFile = new File("C:\\PDT\\pdt_ftp_settings.properties");
                     FileReader FTPFileReader = new FileReader(pdtFTPSettingsFile);
@@ -849,7 +847,7 @@ public class MainGUI extends javax.swing.JFrame {
                     nomCarpetaStock.setText(pdtFTPSettings.getProperty("stock_folder", "Stock_STOCK"));
                     nomCarpetaOrdenes.setText(pdtFTPSettings.getProperty("orders_folder", "Salidas_OBDLV"));
                     nomCarpetaEnvios.setText(pdtFTPSettings.getProperty("shipping_folder", "ConfirmacionSalidas_OBDLV_CONF"));
-                    
+
                     // Escritura de parámetros vacíos de configuración para la base de datos
                     File pdtDBSettingsFile = new File("C:\\PDT\\pdt_db_settings.properties");
                     FileReader DBFileReader = new FileReader(pdtDBSettingsFile);
@@ -858,67 +856,66 @@ public class MainGUI extends javax.swing.JFrame {
                     dbSubMenuUsernameInput.setText(pdtDBSettings.getProperty("user", ""));
                     dbSubMenuPasswordInput.setText(pdtDBSettings.getProperty("password", ""));
                     dbSubMenuDatabaseInput.setText(pdtDBSettings.getProperty("database", ""));
-                    
+
                     // Escritura de parámetros vacíos de configuración para la aplicación
                     File pdtAppSettingsFile = new File("C:\\PDT\\pdt_app_settings.properties");
                     FileReader AppFileReader = new FileReader(pdtAppSettingsFile);
                     pdtDBSettings.load(AppFileReader);
-                    
+
                 } catch (Exception e) {
                 }
-             }
-        else{
-            // Si existen los archivos de configuración, se cargan los parámetros de estos al programa.
-            try {
-                // Escribe los parámetros de configuración para el servidor FTP
-                File pdtFTPSettingsFile = new File("C:\\PDT\\pdt_ftp_settings.properties");
-                FileReader FTPFileReader = new FileReader(pdtFTPSettingsFile);
-                pdtFTPSettings.load(FTPFileReader);
-                ftpSubMenuServerInput.setText(pdtFTPSettings.getProperty("server", "localhost"));
-                ftpSubMenuUserInput.setText(pdtFTPSettings.getProperty("user", ""));
-                ftpSubMenuPasswordInput.setText(pdtFTPSettings.getProperty("password", ""));
-                ftpSubMenuPortInput.setText(pdtFTPSettings.getProperty("port", "21"));
-                nomCarpetaMasda.setText(pdtFTPSettings.getProperty("masda_folder", "Articulos_MASDA"));
-                nomCarpetaStock.setText(pdtFTPSettings.getProperty("stock_folder", "Stock_STOCK"));
-                nomCarpetaOrdenes.setText(pdtFTPSettings.getProperty("orders_folder", "Salidas_OBDLV"));
-                nomCarpetaEnvios.setText(pdtFTPSettings.getProperty("shipping_folder", "ConfirmacionSalidas_OBDLV_CONF"));
-                
-                // Escribe los parámetros de configuración para la base de datos
-                File pdtDBSettingsFile = new File("C:\\PDT\\pdt_db_settings.properties");
-                FileReader DBFileReader = new FileReader(pdtDBSettingsFile);
-                pdtDBSettings.load(DBFileReader);
-                dbSubMenuServerInput.setText(pdtDBSettings.getProperty("server", "localhost"));
-                dbSubMenuUsernameInput.setText(pdtDBSettings.getProperty("user", ""));
-                dbSubMenuPasswordInput.setText(pdtDBSettings.getProperty("password", ""));
-                dbSubMenuDatabaseInput.setText(pdtDBSettings.getProperty("database", ""));
-                
-                // Escribe los parámetros de configuración para la aplicación
-                File pdtAppSettingsFile = new File("C:\\PDT\\pdt_app_settings.properties");
-                FileReader AppFileReader = new FileReader(pdtAppSettingsFile);
-                pdtAppSettings.load(AppFileReader);
-                stockSpinnerHR1.setValue(pdtAppSettings.getProperty("stock_interval_h1", "12 AM"));
-                stockSpinnerStockInterval.setValue(pdtAppSettings.getProperty("stock_interval_h2", "12 hrs"));
-                ordenesFreqSpinner.setValue(pdtAppSettings.getProperty("orders_timer", "30 min."));
-                enviosFreqSpinner.setValue(pdtAppSettings.getProperty("order_shipped_timer", "30 min."));
-                masdaSpinner.setValue(pdtAppSettings.getProperty("masda_timer","5 AM"));
-            } catch (Exception e) {
+            } else {
+                // Si existen los archivos de configuración, se cargan los parámetros de estos al programa.
+                try {
+                    // Escribe los parámetros de configuración para el servidor FTP
+                    File pdtFTPSettingsFile = new File("C:\\PDT\\pdt_ftp_settings.properties");
+                    FileReader FTPFileReader = new FileReader(pdtFTPSettingsFile);
+                    pdtFTPSettings.load(FTPFileReader);
+                    ftpSubMenuServerInput.setText(pdtFTPSettings.getProperty("server", "localhost"));
+                    ftpSubMenuUserInput.setText(pdtFTPSettings.getProperty("user", ""));
+                    ftpSubMenuPasswordInput.setText(pdtFTPSettings.getProperty("password", ""));
+                    ftpSubMenuPortInput.setText(pdtFTPSettings.getProperty("port", "21"));
+                    nomCarpetaMasda.setText(pdtFTPSettings.getProperty("masda_folder", "Articulos_MASDA"));
+                    nomCarpetaStock.setText(pdtFTPSettings.getProperty("stock_folder", "Stock_STOCK"));
+                    nomCarpetaOrdenes.setText(pdtFTPSettings.getProperty("orders_folder", "Salidas_OBDLV"));
+                    nomCarpetaEnvios.setText(pdtFTPSettings.getProperty("shipping_folder", "ConfirmacionSalidas_OBDLV_CONF"));
+
+                    // Escribe los parámetros de configuración para la base de datos
+                    File pdtDBSettingsFile = new File("C:\\PDT\\pdt_db_settings.properties");
+                    FileReader DBFileReader = new FileReader(pdtDBSettingsFile);
+                    pdtDBSettings.load(DBFileReader);
+                    dbSubMenuServerInput.setText(pdtDBSettings.getProperty("server", "localhost"));
+                    dbSubMenuUsernameInput.setText(pdtDBSettings.getProperty("user", ""));
+                    dbSubMenuPasswordInput.setText(pdtDBSettings.getProperty("password", ""));
+                    dbSubMenuDatabaseInput.setText(pdtDBSettings.getProperty("database", ""));
+
+                    // Escribe los parámetros de configuración para la aplicación
+                    File pdtAppSettingsFile = new File("C:\\PDT\\pdt_app_settings.properties");
+                    FileReader AppFileReader = new FileReader(pdtAppSettingsFile);
+                    pdtAppSettings.load(AppFileReader);
+                    stockSpinnerHR1.setValue(pdtAppSettings.getProperty("stock_interval_h1", "12 AM"));
+                    stockSpinnerStockInterval.setValue(pdtAppSettings.getProperty("stock_interval_h2", "12 hrs"));
+                    ordenesFreqSpinner.setValue(pdtAppSettings.getProperty("orders_timer", "30 min."));
+                    enviosFreqSpinner.setValue(pdtAppSettings.getProperty("order_shipped_timer", "30 min."));
+                    masdaSpinner.setValue(pdtAppSettings.getProperty("masda_timer", "5 AM"));
+                } catch (Exception e) {
+                }
             }
-        }   
         }
 
-        
+
     }//GEN-LAST:event_btnSettingsActionPerformed
-    
+
     /* ftp download
-    ftpObject = new FTPObject(pdtFTPSettings.getProperty("server"), pdtFTPSettings.getProperty("port"), pdtFTPSettings.getProperty("user"), pdtFTPSettings.getProperty("password"));
-        int result = ftpObject.downloadFile();
-        if(result == 0){
-            System.out.println("El archivo se descargó con éxito!");
-        }
-        else{
-            System.out.println("El archivo no se pudo descargar!");
-    */
-    
+     ftpObject = new FTPObject(pdtFTPSettings.getProperty("server"), pdtFTPSettings.getProperty("port"), pdtFTPSettings.getProperty("user"), pdtFTPSettings.getProperty("password"));
+     int result = ftpObject.downloadFile();
+     if(result == 0){
+     System.out.println("El archivo se descargó con éxito!");
+     }
+     else{
+     System.out.println("El archivo no se pudo descargar!");
+     */
+
     private void ftpSubMenuSaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ftpSubMenuSaveBtnActionPerformed
         // Si se presiona el botón de "Guardar" en el menú de configuración FTP
         pdtFTPSettings.setProperty("server", ftpSubMenuServerInput.getText());
@@ -929,7 +926,7 @@ public class MainGUI extends javax.swing.JFrame {
         pdtFTPSettings.setProperty("stock_folder", nomCarpetaStock.getText());
         pdtFTPSettings.setProperty("orders_folder", nomCarpetaOrdenes.getText());
         pdtFTPSettings.setProperty("shipping_folder", nomCarpetaEnvios.getText());
-            
+
         File configFile = new File("C:\\PDT\\pdt_ftp_settings.properties");
         FileWriter writer;
         try {
@@ -938,13 +935,13 @@ public class MainGUI extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         // Si se presiona el botón de "Guardar" en el menú de configuración de la base de datos
         pdtDBSettings.setProperty("server", dbSubMenuServerInput.getText());
         pdtDBSettings.setProperty("user", dbSubMenuUsernameInput.getText());
         pdtDBSettings.setProperty("password", new String(dbSubMenuPasswordInput.getPassword()));
         pdtDBSettings.setProperty("database", dbSubMenuDatabaseInput.getText());
-            
+
         File configFile2 = new File("C:\\PDT\\pdt_db_settings.properties");
         FileWriter writer2;
         try {
@@ -967,7 +964,7 @@ public class MainGUI extends javax.swing.JFrame {
         pdtDBSettings.setProperty("user", dbSubMenuUsernameInput.getText());
         pdtDBSettings.setProperty("password", new String(dbSubMenuPasswordInput.getPassword()));
         pdtDBSettings.setProperty("database", dbSubMenuDatabaseInput.getText());
-            
+
         File configFile = new File("C:\\PDT\\pdt_db_settings.properties");
         FileWriter writer;
         try {
@@ -976,7 +973,7 @@ public class MainGUI extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         // Si se presiona el botón de "Guardar" en el menú de configuración FTP
         pdtFTPSettings.setProperty("server", ftpSubMenuServerInput.getText());
         pdtFTPSettings.setProperty("user", ftpSubMenuUserInput.getText());
@@ -986,7 +983,7 @@ public class MainGUI extends javax.swing.JFrame {
         pdtFTPSettings.setProperty("stock_folder", nomCarpetaStock.getText());
         pdtFTPSettings.setProperty("orders_folder", nomCarpetaOrdenes.getText());
         pdtFTPSettings.setProperty("shipping_folder", nomCarpetaEnvios.getText());
-            
+
         File configFile2 = new File("C:\\PDT\\pdt_ftp_settings.properties");
         FileWriter writer2;
         try {
@@ -1002,68 +999,86 @@ public class MainGUI extends javax.swing.JFrame {
         // Si se presiona el botón de "Cancelar" en el menu de configuración del FTP
         menuConfig.dispose();
     }//GEN-LAST:event_dbSubMenuCancelBtnActionPerformed
-    
-        // Este hilo es el que va a ejecutar la barra de progreso del inventario
-	public static class StockThread implements Runnable{
-                @Override
-		public void run(){
-			for (int i=0; i<=100; i++){ //Progressively increment variable i
-                            pbStock.setValue(i); //Set value
-                            pbStock.repaint(); //Refresh graphics
-                            try{Thread.sleep((TimeUnit.MILLISECONDS.convert(12, TimeUnit.HOURS))/100);} //Sleep 200 milliseconds
-                            catch (InterruptedException err){}
-			}
-		}
-	}
-        
-         // Este hilo es el que va a ejecutar la barra de progreso de las órdenes
-	public static class OrderThread implements Runnable{
-                int time = (Integer.parseInt(pdtAppSettings.getProperty("orders_timer").replaceAll("[^0-9]",""))*60*1000)/100;
-                @Override
-		public void run(){
-			for (int i=0; i<=100; i++){ //Progressively increment variable i
-                            pbOrder.setValue(i); //Set value
-                            pbOrder.repaint(); //Refresh graphics
-                            try{Thread.sleep(time);} //Sleep 200 milliseconds
-                            catch (InterruptedException err){}
-			}
-		}
-	}
-        
-         // Este hilo es el que va a ejecutar la barra de progreso de los envíos
-	public static class ShippingThread implements Runnable{
-            int time = (Integer.parseInt(pdtAppSettings.getProperty("order_shipped_timer").replaceAll("[^0-9]",""))*60*1000)/100;
-                @Override
-		public void run(){
-			for (int i=0; i<=100; i++){ //Progressively increment variable i
-                            pbShipping.setValue(i); //Set value
-                            pbShipping.repaint(); //Refresh graphics
-                            try{Thread.sleep(time);} //Sleep 200 milliseconds
-                            catch (InterruptedException err){}
-			}
-		}
-	}
-        
-        // Este hilo es el que va a ejecutar la barra de progreso del masda
-	public static class MasdaThread implements Runnable{
-                @Override
-		public void run(){
-			for (int i=0; i<=100; i++){ //Progressively increment variable i
-                            pbMasda.setValue(i); //Set value
-                            pbMasda.repaint(); //Refresh graphics
-                            try{Thread.sleep((TimeUnit.MILLISECONDS.convert(24, TimeUnit.HOURS))/100);} //Sleep 200 milliseconds
-                            catch (InterruptedException err){}
-			}
-		}
-	}
-    
+
+    // Este hilo es el que va a ejecutar la barra de progreso del inventario
+    public static class StockThread implements Runnable {
+
+        @Override
+        public void run() {
+            for (int i = 0; i <= 100; i++) { //Progressively increment variable i
+                pbStock.setValue(i); //Set value
+                pbStock.repaint(); //Refresh graphics
+                try {
+                    Thread.sleep((TimeUnit.MILLISECONDS.convert(12, TimeUnit.HOURS)) / 100);
+                } //Sleep 200 milliseconds
+                catch (InterruptedException err) {
+                }
+            }
+        }
+    }
+
+    // Este hilo es el que va a ejecutar la barra de progreso de las órdenes
+    public static class OrderThread implements Runnable {
+
+        int time = (Integer.parseInt(pdtAppSettings.getProperty("orders_timer").replaceAll("[^0-9]", "")) * 60 * 1000) / 100;
+
+        @Override
+        public void run() {
+            for (int i = 0; i <= 100; i++) { //Progressively increment variable i
+                pbOrder.setValue(i); //Set value
+                pbOrder.repaint(); //Refresh graphics
+                try {
+                    Thread.sleep(time);
+                } //Sleep 200 milliseconds
+                catch (InterruptedException err) {
+                }
+            }
+        }
+    }
+
+    // Este hilo es el que va a ejecutar la barra de progreso de los envíos
+    public static class ShippingThread implements Runnable {
+
+        int time = (Integer.parseInt(pdtAppSettings.getProperty("order_shipped_timer").replaceAll("[^0-9]", "")) * 60 * 1000) / 100;
+
+        @Override
+        public void run() {
+            for (int i = 0; i <= 100; i++) { //Progressively increment variable i
+                pbShipping.setValue(i); //Set value
+                pbShipping.repaint(); //Refresh graphics
+                try {
+                    Thread.sleep(time);
+                } //Sleep 200 milliseconds
+                catch (InterruptedException err) {
+                }
+            }
+        }
+    }
+
+    // Este hilo es el que va a ejecutar la barra de progreso del masda
+    public static class MasdaThread implements Runnable {
+
+        @Override
+        public void run() {
+            for (int i = 0; i <= 100; i++) { //Progressively increment variable i
+                pbMasda.setValue(i); //Set value
+                pbMasda.repaint(); //Refresh graphics
+                try {
+                    Thread.sleep((TimeUnit.MILLISECONDS.convert(24, TimeUnit.HOURS)) / 100);
+                } //Sleep 200 milliseconds
+                catch (InterruptedException err) {
+                }
+            }
+        }
+    }
+
     private void appConfigBtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appConfigBtnGuardarActionPerformed
         // Si se presiona el botón de guardar en el menú de configuración de la aplicación
         pdtDBSettings.setProperty("server", dbSubMenuServerInput.getText());
         pdtDBSettings.setProperty("user", dbSubMenuUsernameInput.getText());
         pdtDBSettings.setProperty("password", new String(dbSubMenuPasswordInput.getPassword()));
         pdtDBSettings.setProperty("database", dbSubMenuDatabaseInput.getText());
-            
+
         File configFile = new File("C:\\PDT\\pdt_db_settings.properties");
         FileWriter writer;
         try {
@@ -1072,13 +1087,13 @@ public class MainGUI extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         // Si se presiona el botón de "Guardar" en el menú de configuración FTP
         pdtFTPSettings.setProperty("server", ftpSubMenuServerInput.getText());
         pdtFTPSettings.setProperty("user", ftpSubMenuUserInput.getText());
         pdtFTPSettings.setProperty("password", new String(ftpSubMenuPasswordInput.getPassword()));
         pdtFTPSettings.setProperty("port", ftpSubMenuPortInput.getText());
-            
+
         File configFile2 = new File("C:\\PDT\\pdt_ftp_settings.properties");
         FileWriter writer2;
         try {
@@ -1087,13 +1102,13 @@ public class MainGUI extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         pdtAppSettings.setProperty("stock_interval_h1", stockSpinnerHR1.getValue().toString());
         pdtAppSettings.setProperty("stock_interval_h2", stockSpinnerStockInterval.getValue().toString());
         pdtAppSettings.setProperty("orders_timer", ordenesFreqSpinner.getValue().toString());
         pdtAppSettings.setProperty("order_shipped_timer", enviosFreqSpinner.getValue().toString());
         pdtAppSettings.setProperty("masda_timer", masdaSpinner.getValue().toString());
-        
+
         File configFile3 = new File("C:\\PDT\\pdt_app_settings.properties");
         FileWriter writer3;
         try {
@@ -1102,7 +1117,7 @@ public class MainGUI extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         menuConfig.dispose();
     }//GEN-LAST:event_appConfigBtnGuardarActionPerformed
 
@@ -1111,115 +1126,118 @@ public class MainGUI extends javax.swing.JFrame {
         menuConfig.dispose();
     }//GEN-LAST:event_appConfigBtnCancelarActionPerformed
 
-    public static int getNextExecutionTime(int targetHour){
+    public static int getNextExecutionTime(int targetHour) {
         int delayHr = 0;
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int min = calendar.get(Calendar.MINUTE);
         delayHr = hour < targetHour ? targetHour - hour : targetHour - hour + 24;
-        
+
         System.out.println("Hora actual: " + hour + ":" + min);
         System.out.println("Siguiente ejecución en: " + delayHr + " hrs.");
-        
+
         return delayHr;
     }
-    
+
     private void btnStocksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStocksActionPerformed
         // Cuando se presiona el botón de inventario
-        if(btnStocks.isSelected()){
+        if (btnStocks.isSelected()) {
             btnStocks.setIcon(new ImageIcon(this.getClass().getResource("/images/stock_icon_on.png")));
             logScreen.append("\nInicializando la verificación del inventario...");
             new Thread(new StockThread()).start();
-            
+
             //Inicializa la tarea
             schedulerStock = Executors.newScheduledThreadPool(1);
-            schedulerStock.scheduleAtFixedRate(new TimerTask(){
+            schedulerStock.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
                     // Tarea para verificar el stock
                     new Thread(new StockThread()).start();
-                        loadingIcon.setVisible(true);
-                        
-                        // Crea el objeto FTP
-                        FTPObject ftpObject = new FTPObject(pdtFTPSettings.getProperty("server"), pdtFTPSettings.getProperty("port"), pdtFTPSettings.getProperty("user"), pdtFTPSettings.getProperty("password"));
-                        System.out.println( "Actualizando Stock Diario..." );
-                        logScreen.append("\n");
-                        logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Actualizando el inventario...");
-                        Validacion validacion = new Validacion();
-                        //validacion.validaNombreArchivoStockDiario("STOCK_PDT_20150727_131700_041.xml");
-                        // Primero checa si existe un archivo XML con el nombre especificado
-                        ArrayList archivoStockDiario = ftpObject.getStockDiarioFile();
-                        if((int)archivoStockDiario.get(0) == 0){
-                            logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo se descargó exitosamente!");
-                            int exitCode = ftpObject.deleteFile(pdtFTPSettings.getProperty("stock_folder"), archivoStockDiario.get(1).toString());
-                            if(exitCode == 0){
-                                logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo se borró exitosamente!");
-                            }
-                            ProcesadorDeStock ps = new ProcesadorDeStock();
-                            try {
-                                ps.actualizarDBPrestaShop("C:\\PDT\\tmp\\" + archivoStockDiario.get(1));
+                    loadingIcon.setVisible(true);
+
+                    // Crea el objeto FTP
+                    FTPObject ftpObject = new FTPObject(pdtFTPSettings.getProperty("server"), pdtFTPSettings.getProperty("port"), pdtFTPSettings.getProperty("user"), pdtFTPSettings.getProperty("password"));
+                    System.out.println("Actualizando Stock Diario...");
+                    logScreen.append("\n");
+                    logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Actualizando el inventario...");
+                    Validacion validacion = new Validacion();
+        //validacion.validaNombreArchivoStockDiario("STOCK_PDT_20150727_131700_041.xml");
+                    // Primero checa si existe un archivo XML con el nombre especificado
+                    ArrayList archivoStockDiario = ftpObject.getStockDiarioFile();
+                    if ((int) archivoStockDiario.get(0) == 0) {
+                        logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo se descargó exitosamente!");
+                        int exitCode = ftpObject.deleteFile(pdtFTPSettings.getProperty("stock_folder"), archivoStockDiario.get(1).toString());
+                        if (exitCode == 0) {
+                            logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo se borró exitosamente!");
+                        }
+                        ProcesadorDeStock ps = new ProcesadorDeStock();
+                        try {
+                            ps.actualizarDBPrestaShop("C:\\PDT\\tmp\\" + archivoStockDiario.get(1));
+                            if (!(new File("C:\\PDT\\procesados\\" + archivoStockDiario.get(1)).exists())) {
                                 FileUtils.moveFileToDirectory(new File("C:\\PDT\\tmp\\" + archivoStockDiario.get(1)), new File("C:\\PDT\\procesados\\"), true);
-                            } catch (ParserConfigurationException | SAXException | IOException ex) {
-                                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-                                logScreen.append("\n" + new Timestamp(new Date().getTime()) + ex.getMessage());
-                            } catch (Exception ex) {
-                                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-                                logScreen.append("\n" + new Timestamp(new Date().getTime()) + ex.getMessage());
+                            } else {
+                                FileUtils.deleteQuietly(new File("C:\\PDT\\procesados\\" + archivoStockDiario.get(1)));
+                                FileUtils.moveFileToDirectory(new File("C:\\PDT\\tmp\\" + archivoStockDiario.get(1)), new File("C:\\PDT\\procesados\\"), true);
                             }
-                        }else{
-                            System.out.println("El archivo no fue encontrado.");
-                            logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo no fue encontrado.");
+                        } catch (ParserConfigurationException | SAXException | IOException ex) {
+                            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                            logScreen.append("\n" + new Timestamp(new Date().getTime()) + ex.getMessage());
+                        } catch (Exception ex) {
+                            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                            logScreen.append("\n" + new Timestamp(new Date().getTime()) + ex.getMessage());
                         }
-                        logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Terminando actualización del inventario...");
-                        loadingIcon.setVisible(false);
-                        ftpObject.dc();
-                }
-            }, getNextExecutionTime(Integer.parseInt(pdtAppSettings.getProperty("stock_interval_h1").replaceAll("[^0-9]",""))), 12, TimeUnit.HOURS);
-            
-                /* Inicializa la tarea para estar checando si hay un archivo de stock para actualizar
-                ActionListener actionListenerStockDiario = new ActionListener() {       
-                    @Override
-                    public void actionPerformed(ActionEvent actionEvent) {
-                        new Thread(new StockThread()).start();
-                        loadingIcon.setVisible(true);
-                        
-                        // Crea el objeto FTP
-                        FTPObject ftpObject = new FTPObject(pdtFTPSettings.getProperty("server"), pdtFTPSettings.getProperty("port"), pdtFTPSettings.getProperty("user"), pdtFTPSettings.getProperty("password"));
-                        System.out.println( "Actualizando Stock Diario..." );
-                        logScreen.append("\n");
-                        logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Actualizando el inventario...");
-                        Validacion validacion = new Validacion();
-                        //validacion.validaNombreArchivoStockDiario("STOCK_PDT_20150727_131700_041.xml");
-                        // Primero checa si existe un archivo XML con el nombre especificado
-                        ArrayList archivoStockDiario = ftpObject.getStockDiarioFile();
-                        if((int)archivoStockDiario.get(0) == 0){
-                            logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo se descargó exitosamente!");
-                            int exitCode = ftpObject.deleteFile(archivoStockDiario.get(1).toString());
-                            if(exitCode == 0){
-                                logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo se borró exitosamente!");
-                            }
-                            ProcesadorDeStock ps = new ProcesadorDeStock();
-                            try {
-                                ps.actualizarDBPrestaShop("C:\\PDT\\tmp\\" + archivoStockDiario.get(1));
-                            } catch (ParserConfigurationException | SAXException | IOException ex) {
-                                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (Exception ex) {
-                                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }else{
-                            System.out.println("El archivo no fue encontrado.");
-                            logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo no fue encontrado.");
-                        }
-                        logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Terminando actualización del inventario...");
-                        loadingIcon.setVisible(false);
-                        ftpObject.dc();
+                    } else {
+                        System.out.println("El archivo no fue encontrado.");
+                        logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo no fue encontrado.");
                     }
-                };
-                timerStockDiario = new Timer( 60000, actionListenerStockDiario );
-                timerStockDiario.start();
-            */
-        }
-        else{
+                    logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Terminando actualización del inventario...");
+                    ftpObject.dc();
+                }
+            }, getNextExecutionTime(Integer.parseInt(pdtAppSettings.getProperty("stock_interval_h1").replaceAll("[^0-9]", ""))), 12, TimeUnit.HOURS);
+
+            /* Inicializa la tarea para estar checando si hay un archivo de stock para actualizar
+             ActionListener actionListenerStockDiario = new ActionListener() {       
+             @Override
+             public void actionPerformed(ActionEvent actionEvent) {
+             new Thread(new StockThread()).start();
+             loadingIcon.setVisible(true);
+                        
+             // Crea el objeto FTP
+             FTPObject ftpObject = new FTPObject(pdtFTPSettings.getProperty("server"), pdtFTPSettings.getProperty("port"), pdtFTPSettings.getProperty("user"), pdtFTPSettings.getProperty("password"));
+             System.out.println( "Actualizando Stock Diario..." );
+             logScreen.append("\n");
+             logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Actualizando el inventario...");
+             Validacion validacion = new Validacion();
+             //validacion.validaNombreArchivoStockDiario("STOCK_PDT_20150727_131700_041.xml");
+             // Primero checa si existe un archivo XML con el nombre especificado
+             ArrayList archivoStockDiario = ftpObject.getStockDiarioFile();
+             if((int)archivoStockDiario.get(0) == 0){
+             logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo se descargó exitosamente!");
+             int exitCode = ftpObject.deleteFile(archivoStockDiario.get(1).toString());
+             if(exitCode == 0){
+             logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo se borró exitosamente!");
+             }
+             ProcesadorDeStock ps = new ProcesadorDeStock();
+             try {
+             ps.actualizarDBPrestaShop("C:\\PDT\\tmp\\" + archivoStockDiario.get(1));
+             } catch (ParserConfigurationException | SAXException | IOException ex) {
+             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+             } catch (Exception ex) {
+             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+             }
+             }else{
+             System.out.println("El archivo no fue encontrado.");
+             logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo no fue encontrado.");
+             }
+             logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Terminando actualización del inventario...");
+             loadingIcon.setVisible(false);
+             ftpObject.dc();
+             }
+             };
+             timerStockDiario = new Timer( 60000, actionListenerStockDiario );
+             timerStockDiario.start();
+             */
+        } else {
             btnStocks.setIcon(new ImageIcon(this.getClass().getResource("/images/stock_icon_off.png")));
             logScreen.append("\nDeteniendo la verificación de órdenes...");
             //timerStockDiario.stop();
@@ -1229,25 +1247,24 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void btnOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrdersActionPerformed
         // Cuando se presiona el botón de órdenes
-        if(btnOrders.isSelected()){
+        if (btnOrders.isSelected()) {
             btnOrders.setIcon(new ImageIcon(this.getClass().getResource("/images/order_icon_on.png")));
             logScreen.append("\nInicializando la verificación de órdenes...");
             new Thread(new OrderThread()).start();
             // Inicializa la tarea para estar checando si hay órdenes
-                ActionListener actionListenerOrdenes = new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent actionEvent) {
-                        new Thread(new OrderThread()).start();
-                        SwingWorker<Void, String> po = new ProcesadorDeOrdenes();
-                        loadingIcon.setVisible(true);
-                        po.execute();
-                    }
-                };
-                timerOrdenes = new Timer( Integer.parseInt(pdtAppSettings.getProperty("orders_timer").replaceAll("[^0-9]",""))*60*1000, actionListenerOrdenes );
-                //timerOrdenes = new Timer( 10000, actionListenerMasda );
-                timerOrdenes.start();
-        }
-        else{
+            ActionListener actionListenerOrdenes = new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    new Thread(new OrderThread()).start();
+                    SwingWorker<Void, String> po = new ProcesadorDeOrdenes();
+                    loadingIcon.setVisible(true);
+                    po.execute();
+                }
+            };
+            timerOrdenes = new Timer(Integer.parseInt(pdtAppSettings.getProperty("orders_timer").replaceAll("[^0-9]", "")) * 60 * 1000, actionListenerOrdenes);
+            //timerOrdenes = new Timer( 10000, actionListenerMasda );
+            timerOrdenes.start();
+        } else {
             btnOrders.setIcon(new ImageIcon(this.getClass().getResource("/images/order_icon_off.png")));
             logScreen.append("\nDeteniendo la verificación de órdenes...");
             timerOrdenes.stop();
@@ -1256,57 +1273,56 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void btnShippingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShippingActionPerformed
         // Cuando se presiona el botón de envíos
-        if(btnShipping.isSelected()){
+        if (btnShipping.isSelected()) {
             btnShipping.setIcon(new ImageIcon(this.getClass().getResource("/images/shipping_icon_on.png")));
             logScreen.append("\nInicializando la verificación de envíos...");
             new Thread(new ShippingThread()).start();
             // Inicializa la tarea para estar checando los envíos
-                ActionListener actionListenerEnvios = new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent actionEvent) {
-                        new Thread(new ShippingThread()).start();
-                        logScreen.append("\n");
-                        logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Buscando archivo de envíos en el servidor FTP...");
-                        
-                        // Crea un objeto FTP
-                        FTPObject ftpObject = new FTPObject(pdtFTPSettings.getProperty("server"), pdtFTPSettings.getProperty("port"), pdtFTPSettings.getProperty("user"), pdtFTPSettings.getProperty("password"));
-                        
-                        // Primero checa si existe un archivo XML con el nombre especificado
-                        ArrayList<FTPFile> archivoOrdenesEnvios = ftpObject.getEnviosFile();
-                        if(!archivoOrdenesEnvios.isEmpty()){
-                            logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Los archivos se descargaron exitosamente!");
-                            
-                            for(FTPFile f : archivoOrdenesEnvios){
-                                int exitCode = ftpObject.deleteFile(pdtFTPSettings.getProperty("shipping_folder"), f.getName());
-                                if(exitCode == 0){
-                                    logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo se borró exitosamente!");
-                                }
+            ActionListener actionListenerEnvios = new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    new Thread(new ShippingThread()).start();
+                    logScreen.append("\n");
+                    logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Buscando archivo de envíos en el servidor FTP...");
+
+                    // Crea un objeto FTP
+                    FTPObject ftpObject = new FTPObject(pdtFTPSettings.getProperty("server"), pdtFTPSettings.getProperty("port"), pdtFTPSettings.getProperty("user"), pdtFTPSettings.getProperty("password"));
+
+                    // Primero checa si existe un archivo XML con el nombre especificado
+                    ArrayList<FTPFile> archivoOrdenesEnvios = ftpObject.getEnviosFile();
+                    if (!archivoOrdenesEnvios.isEmpty()) {
+                        logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Los archivos se descargaron exitosamente!");
+
+                        for (FTPFile f : archivoOrdenesEnvios) {
+                            int exitCode = ftpObject.deleteFile(pdtFTPSettings.getProperty("shipping_folder"), f.getName());
+                            if (exitCode == 0) {
+                                logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo se borró exitosamente!");
                             }
-                            
-                            PorcesadorDeEnvios pe = new PorcesadorDeEnvios();
-                            try {
-                                pe.procesarOrdenesDeEnvio(archivoOrdenesEnvios);
-                            } catch (ParserConfigurationException ex) {
-                                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-                                logScreen.append("\n" + new Timestamp(new Date().getTime()) + ex.getMessage());
-                            } catch (IOException ex) {
-                                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-                                logScreen.append("\n" + new Timestamp(new Date().getTime()) + ex.getMessage());
-                            } catch (Exception ex) {
-                                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-                                logScreen.append("\n" + new Timestamp(new Date().getTime()) + ex.getMessage());
-                            }
-                        }else{
-                            logScreen.append("\n" + new Timestamp(new Date().getTime()) + " No se encontró ningún archivo.");
                         }
-                        logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Terminando la búsqueda de envíos...");
-                        ftpObject.dc();
+
+                        PorcesadorDeEnvios pe = new PorcesadorDeEnvios();
+                        try {
+                            pe.procesarOrdenesDeEnvio(archivoOrdenesEnvios);
+                        } catch (ParserConfigurationException ex) {
+                            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                            logScreen.append("\n" + new Timestamp(new Date().getTime()) + " " + ex.getMessage());
+                        } catch (IOException ex) {
+                            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                            logScreen.append("\n" + new Timestamp(new Date().getTime()) + " " + ex.getMessage());
+                        } catch (Exception ex) {
+                            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                            logScreen.append("\n" + new Timestamp(new Date().getTime()) + " " + ex.getMessage());
+                        }
+                    } else {
+                        logScreen.append("\n" + new Timestamp(new Date().getTime()) + " No se encontró ningún archivo.");
                     }
-                };
-                timerEnvios = new Timer( Integer.parseInt(pdtAppSettings.getProperty("order_shipped_timer").replaceAll("[^0-9]",""))*60*1000, actionListenerEnvios );
-                timerEnvios.start();  
-        }
-        else{
+                    logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Terminando la búsqueda de envíos...");
+                    ftpObject.dc();
+                }
+            };
+            timerEnvios = new Timer(Integer.parseInt(pdtAppSettings.getProperty("order_shipped_timer").replaceAll("[^0-9]", "")) * 60 * 1000, actionListenerEnvios);
+            timerEnvios.start();
+        } else {
             btnShipping.setIcon(new ImageIcon(this.getClass().getResource("/images/shipping_icon_off.png")));
             logScreen.append("\nDeteniendo la verificación de órdenes...");
             timerEnvios.stop();
@@ -1314,47 +1330,45 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnShippingActionPerformed
 
     private void btnMasdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMasdaActionPerformed
-        if(btnMasda.isSelected()){
-                btnMasda.setIcon(new ImageIcon(this.getClass().getResource("/images/masda_icon_on.png")));
-                logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Inicializando la generación del Maestro de Artículos...");
-                new Thread(new MasdaThread()).start();
-                
-                // Inicia tarea para generar masda
-                schedulerMasda = Executors.newScheduledThreadPool(1);
-                schedulerMasda.scheduleAtFixedRate(new TimerTask(){
-                    @Override
-                    public void run() {
-                        try {
-                            new Thread(new MasdaThread()).start();
-                            SwingWorker<Void, String> pm = new ProcesadorDeMasda();
-                            loadingIcon.setVisible(true);
-                            pm.execute();
-                        } catch (FileNotFoundException ex) {
-                            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+        if (btnMasda.isSelected()) {
+            btnMasda.setIcon(new ImageIcon(this.getClass().getResource("/images/masda_icon_on.png")));
+            logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Inicializando la generación del Maestro de Artículos...");
+            new Thread(new MasdaThread()).start();
+
+            // Inicia tarea para generar masda
+            schedulerMasda = Executors.newScheduledThreadPool(1);
+            schedulerMasda.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        new Thread(new MasdaThread()).start();
+                        SwingWorker<Void, String> pm = new ProcesadorDeMasda();
+                        loadingIcon.setVisible(true);
+                        pm.execute();
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }, getNextExecutionTime(Integer.parseInt(pdtAppSettings.getProperty("masda_timer").replaceAll("[^0-9]",""))), 24, TimeUnit.HOURS);
-                
-                
-                /* Inicializa la tarea para checar si hay productos nuevos
-                ActionListener actionListenerMasda = new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent actionEvent) {
-                        try {
-                            new Thread(new MasdaThread()).start();
-                            SwingWorker<Void, String> pm = new ProcesadorDeMasda();
-                            loadingIcon.setVisible(true);
-                            pm.execute();
-                        } catch (FileNotFoundException ex) {
-                            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                };
-                timerMasda = new Timer(900000, actionListenerMasda);
-                timerMasda.start();
-                */
-        }
-        else{
+                }
+            }, getNextExecutionTime(Integer.parseInt(pdtAppSettings.getProperty("masda_timer").replaceAll("[^0-9]", ""))), 24, TimeUnit.HOURS);
+
+            /* Inicializa la tarea para checar si hay productos nuevos
+             ActionListener actionListenerMasda = new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent actionEvent) {
+             try {
+             new Thread(new MasdaThread()).start();
+             SwingWorker<Void, String> pm = new ProcesadorDeMasda();
+             loadingIcon.setVisible(true);
+             pm.execute();
+             } catch (FileNotFoundException ex) {
+             Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+             }
+             }
+             };
+             timerMasda = new Timer(900000, actionListenerMasda);
+             timerMasda.start();
+             */
+        } else {
             btnMasda.setIcon(new ImageIcon(this.getClass().getResource("/images/masda_icon_off.png")));
             logScreen.append("\nDeteniendo la generación del Maestro de Artículos...");
             //timerMasda.stop();
@@ -1364,45 +1378,55 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void stockTestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockTestBtnActionPerformed
         // si se presiona el boton de prueba de stock
-                        // Crea el objeto FTP
-                        FTPObject ftpObject = new FTPObject(pdtFTPSettings.getProperty("server"), pdtFTPSettings.getProperty("port"), pdtFTPSettings.getProperty("user"), pdtFTPSettings.getProperty("password"));
-                        System.out.println( "Actualizando Stock Diario..." );
-                        logScreen.append("\n");
-                        logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Actualizando el inventario...");
-                        Validacion validacion = new Validacion();
-                        //validacion.validaNombreArchivoStockDiario("STOCK_PDT_20150727_131700_041.xml");
-                        // Primero checa si existe un archivo XML con el nombre especificado
-                        ArrayList archivoStockDiario = ftpObject.getStockDiarioFile();
-                        if((int)archivoStockDiario.get(0) == 0){
-                            logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo se descargó exitosamente!");
-                            int exitCode = ftpObject.deleteFile(pdtFTPSettings.getProperty("stock_folder"), archivoStockDiario.get(1).toString());
-                            if(exitCode == 0){
-                                logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo se borró exitosamente!");
-                            }
-                            ProcesadorDeStock ps = new ProcesadorDeStock();
-                            try {
-                                ps.actualizarDBPrestaShop("C:\\PDT\\tmp\\" + archivoStockDiario.get(1));
-                                FileUtils.moveFileToDirectory(new File("C:\\PDT\\tmp\\" + archivoStockDiario.get(1)), new File("C:\\PDT\\procesados\\"), true);
-                            } catch (ParserConfigurationException | SAXException | IOException ex) {
-                                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-                                logScreen.append("\n" + new Timestamp(new Date().getTime()) + ex.getMessage());
-                            } catch (Exception ex) {
-                                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-                                logScreen.append("\n" + new Timestamp(new Date().getTime()) + ex.getMessage());
-                            }
-                        }
+        // Crea el objeto FTP
+        FTPObject ftpObject = new FTPObject(pdtFTPSettings.getProperty("server"), pdtFTPSettings.getProperty("port"), pdtFTPSettings.getProperty("user"), pdtFTPSettings.getProperty("password"));
+        System.out.println("Actualizando Stock Diario...");
+        logScreen.append("\n");
+        logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Actualizando el inventario...");
+        Validacion validacion = new Validacion();
+        //validacion.validaNombreArchivoStockDiario("STOCK_PDT_20150727_131700_041.xml");
+        // Primero checa si existe un archivo XML con el nombre especificado
+        ArrayList archivoStockDiario = ftpObject.getStockDiarioFile();
+        if ((int) archivoStockDiario.get(0) == 0) {
+            logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo se descargó exitosamente!");
+            int exitCode = ftpObject.deleteFile(pdtFTPSettings.getProperty("stock_folder"), archivoStockDiario.get(1).toString());
+            if (exitCode == 0) {
+                logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo se borró exitosamente!");
+            }
+            ProcesadorDeStock ps = new ProcesadorDeStock();
+            try {
+                ps.actualizarDBPrestaShop("C:\\PDT\\tmp\\" + archivoStockDiario.get(1));
+                if (!(new File("C:\\PDT\\procesados\\" + archivoStockDiario.get(1)).exists())) {
+                    FileUtils.moveFileToDirectory(new File("C:\\PDT\\tmp\\" + archivoStockDiario.get(1)), new File("C:\\PDT\\procesados\\"), true);
+                } else {
+                    FileUtils.deleteQuietly(new File("C:\\PDT\\procesados\\" + archivoStockDiario.get(1)));
+                    FileUtils.moveFileToDirectory(new File("C:\\PDT\\tmp\\" + archivoStockDiario.get(1)), new File("C:\\PDT\\procesados\\"), true);
+                }
+            } catch (ParserConfigurationException | SAXException | IOException ex) {
+                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                logScreen.append("\n" + new Timestamp(new Date().getTime()) + ex.getMessage());
+            } catch (Exception ex) {
+                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                logScreen.append("\n" + new Timestamp(new Date().getTime()) + ex.getMessage());
+            }
+        } else {
+            System.out.println("El archivo no fue encontrado.");
+            logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo no fue encontrado.");
+        }
+        logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Terminando actualización del inventario...");
+        ftpObject.dc();
     }//GEN-LAST:event_stockTestBtnActionPerformed
 
     private void masdaTestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_masdaTestBtnActionPerformed
         // si presiona el boton de prueba de masda
         try {
-                new Thread(new MasdaThread()).start();
-                SwingWorker<Void, String> pm = new ProcesadorDeMasda();
-                loadingIcon.setVisible(true);
-                pm.execute();
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-              }
+            new Thread(new MasdaThread()).start();
+            SwingWorker<Void, String> pm = new ProcesadorDeMasda();
+            loadingIcon.setVisible(true);
+            pm.execute();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_masdaTestBtnActionPerformed
 
     private void orderTestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderTestButtonActionPerformed
@@ -1415,62 +1439,60 @@ public class MainGUI extends javax.swing.JFrame {
     private void shippingTestBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shippingTestBtnActionPerformed
         // si se presiona el boton de prueba de envíos
         logScreen.append("\n");
-                        logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Buscando archivo de envíos en el servidor FTP...");
-                        
-                        // Crea un objeto FTP
-                        FTPObject ftpObject = new FTPObject(pdtFTPSettings.getProperty("server"), pdtFTPSettings.getProperty("port"), pdtFTPSettings.getProperty("user"), pdtFTPSettings.getProperty("password"));
-                        
-                        // Primero checa si existe un archivo XML con el nombre especificado
-                        ArrayList<FTPFile> archivoOrdenesEnvios = ftpObject.getEnviosFile();
-                        if(!archivoOrdenesEnvios.isEmpty()){
-                            logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Los archivos se descargaron exitosamente!");
-                            
-                            for(FTPFile f : archivoOrdenesEnvios){
-                                int exitCode = ftpObject.deleteFile(pdtFTPSettings.getProperty("shipping_folder"), f.getName());
-                                if(exitCode == 0){
-                                    logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo se borró exitosamente!");
-                                }
-                            }
-                            
-                            PorcesadorDeEnvios pe = new PorcesadorDeEnvios();
-                            try {
-                                pe.procesarOrdenesDeEnvio(archivoOrdenesEnvios);
-                            } catch (ParserConfigurationException ex) {
-                                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-                                logScreen.append("\n" + new Timestamp(new Date().getTime()) + ex.getMessage());
-                            } catch (IOException ex) {
-                                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-                                logScreen.append("\n" + new Timestamp(new Date().getTime()) + ex.getMessage());
-                            } catch (Exception ex) {
-                                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-                                logScreen.append("\n" + new Timestamp(new Date().getTime()) + ex.getMessage());
-                            }
-                        }else{
-                            logScreen.append("\n" + new Timestamp(new Date().getTime()) + " No se encontró ningún archivo.");
-                        }
-                        logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Terminando la búsqueda de envíos...");
-                        ftpObject.dc();
+        logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Buscando archivo de envíos en el servidor FTP...");
+
+        // Crea un objeto FTP
+        FTPObject ftpObject = new FTPObject(pdtFTPSettings.getProperty("server"), pdtFTPSettings.getProperty("port"), pdtFTPSettings.getProperty("user"), pdtFTPSettings.getProperty("password"));
+
+        // Primero checa si existe un archivo XML con el nombre especificado
+        ArrayList<FTPFile> archivoOrdenesEnvios = ftpObject.getEnviosFile();
+        if (!archivoOrdenesEnvios.isEmpty()) {
+            logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Los archivos se descargaron exitosamente!");
+
+            for (FTPFile f : archivoOrdenesEnvios) {
+                int exitCode = ftpObject.deleteFile(pdtFTPSettings.getProperty("shipping_folder"), f.getName());
+                if (exitCode == 0) {
+                    logScreen.append("\n" + new Timestamp(new Date().getTime()) + " El archivo se borró exitosamente!");
+                }
+            }
+
+            PorcesadorDeEnvios pe = new PorcesadorDeEnvios();
+            try {
+                pe.procesarOrdenesDeEnvio(archivoOrdenesEnvios);
+            } catch (ParserConfigurationException ex) {
+                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                logScreen.append("\n" + new Timestamp(new Date().getTime()) + ex.getMessage());
+            } catch (IOException ex) {
+                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                logScreen.append("\n" + new Timestamp(new Date().getTime()) + ex.getMessage());
+            } catch (Exception ex) {
+                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                logScreen.append("\n" + new Timestamp(new Date().getTime()) + ex.getMessage());
+            }
+        } else {
+            logScreen.append("\n" + new Timestamp(new Date().getTime()) + " No se encontró ningún archivo.");
+        }
+        logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Terminando la búsqueda de envíos...");
+        ftpObject.dc();
     }//GEN-LAST:event_shippingTestBtnActionPerformed
-    
+
     // En caso de que el usuario quiera cerrar la aplicación
-    
     /**
      * @param args the command line arguments
      * @throws java.io.IOException
-     * 
+     *
      */
     public static void main(String args[]) throws IOException {
-        
-        /* Single instance lock via serversockets
-        try{
-            ServerSocket socket = new ServerSocket(9999, 10, InetAddress.getByAddress(new byte[] {127, 0, 0, 1}));
 
-        }catch(java.net.BindException b){
-            JOptionPane.showMessageDialog(null,"Ya existe una intancia de esta aplicación!","ERROR",3);
-        }catch(Exception e){
-            System.out.println(e.toString());
-        }*/
-        
+        /* Single instance lock via serversockets
+         try{
+         ServerSocket socket = new ServerSocket(9999, 10, InetAddress.getByAddress(new byte[] {127, 0, 0, 1}));
+
+         }catch(java.net.BindException b){
+         JOptionPane.showMessageDialog(null,"Ya existe una intancia de esta aplicación!","ERROR",3);
+         }catch(Exception e){
+         System.out.println(e.toString());
+         }*/
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -1500,21 +1522,31 @@ public class MainGUI extends javax.swing.JFrame {
             public void run() {
                 MainGUI ventana = new MainGUI();
                 ventana.setVisible(true);
-                DefaultCaret caret = (DefaultCaret)logScreen.getCaret();
+                DefaultCaret caret = (DefaultCaret) logScreen.getCaret();
                 caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+                
+                // Inicia todos los procesos al momento de ejecutar el programa
+                ventana.btnStocks.doClick();
+                ventana.btnStocks.setSelected(true);
+                ventana.btnMasda.doClick();
+                ventana.btnMasda.setSelected(true);
+                ventana.btnOrders.doClick();
+                ventana.btnOrders.setSelected(true);
+                ventana.btnShipping.doClick();
+                ventana.btnShipping.setSelected(true);
             }
         });
-        
-        if(!(new File("C:\\PDT").exists())){
+
+        if (!(new File("C:\\PDT").exists())) {
             new File("C:\\PDT").mkdir();
         }
-        if(!(new File("C:\\PDT\\tmp").exists())){
+        if (!(new File("C:\\PDT\\tmp").exists())) {
             new File("C:\\PDT\\tmp").mkdir();
         }
-        if(!(new File("C:\\PDT\\procesados").exists())){
+        if (!(new File("C:\\PDT\\procesados").exists())) {
             new File("C:\\PDT\\procesados").mkdir();
         }
-        if((!(new File("C:\\PDT\\pdt_app_settings.properties").exists()))){
+        if ((!(new File("C:\\PDT\\pdt_app_settings.properties").exists()))) {
             ClassLoader classloader = Thread.currentThread().getContextClassLoader();
             InputStream iStreamApp = classloader.getResourceAsStream("files/pdt_app_settings.properties"); // archivo de configuración de la aplicación
             OutputStream outputStreamApp = new FileOutputStream(new File("C:\\PDT\\pdt_app_settings.properties")); // stream de escritura para archivo config de la aplicación
@@ -1535,11 +1567,11 @@ public class MainGUI extends javax.swing.JFrame {
         File pdtDBSettingsFile = new File("C:\\PDT\\pdt_db_settings.properties");
         FileReader DBFileReader = new FileReader(pdtDBSettingsFile);
         pdtDBSettings.load(DBFileReader);
-        
+
         File pdtFTPSettingsFile = new File("C:\\PDT\\pdt_ftp_settings.properties");
         FileReader FTPFileReader = new FileReader(pdtFTPSettingsFile);
         pdtFTPSettings.load(FTPFileReader);
-        
+
         File pdtAppSettingsFile = new File("C:\\PDT\\pdt_app_settings.properties");
         FileReader AppFileReader = new FileReader(pdtAppSettingsFile);
         pdtAppSettings.load(AppFileReader);
