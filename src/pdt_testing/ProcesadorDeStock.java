@@ -82,21 +82,10 @@ public class ProcesadorDeStock extends SwingWorker<Void, String> {
         DBConn db = new DBConn(dbServer, dbUsr, pwdDB, dbNom);
         db.startConnection();
         
-        // hace el atributo = 0
-        for (int i = 0; i < productos.getLength(); i++) {
-            String queryId = "Select id_product from " + tablePrefix + "product_attribute where reference = " + "'" + productoRef.get(i).toString() + "'";
-            ResultSet resultSetIds = db.Query(queryId);
-            resultSetIds.next();
-            String id = resultSetIds.getString(1);
-            System.out.println(id);
-            
-            String query = "select sum(quantity) from " + tablePrefix + "stock_available where id_product = " + id + " and id_product_attribute <> 0";
-            ResultSet suma = db.Query(query);
-            suma.next();
-            String query2 = "update " + tablePrefix + "stock_available set quantity = " + suma.getString(1) + " where id_product = " + id + " and id_product_attribute = 0";
-            int resUpdate = db.updateQuery(query2);
-            MainGUI.logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Registros afectados por el UPDATE: " + resUpdate);
-        }
+        // quantity = 0
+        String queryUpdateToZeros = "update " + tablePrefix + "stock_available set quantity = 0 where quantity <> 0";
+        int resUpdateZeros = db.updateQuery(queryUpdateToZeros);
+        MainGUI.logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Registros afectados por el UPDATE: " + resUpdateZeros);
 
         for (int i = 0; i < productoRef.size(); i++) {
             String querySelect = "Select id_product, id_product_attribute\n"
@@ -120,6 +109,21 @@ public class ProcesadorDeStock extends SwingWorker<Void, String> {
             db.getConnection().commit();// Finaliza la transacción
         }
         
+        // hace el atributo = 0
+        for (int i = 0; i < productos.getLength(); i++) {
+            String queryId = "Select id_product from " + tablePrefix + "product_attribute where reference = " + "'" + productoRef.get(i).toString() + "'";
+            ResultSet resultSetIds = db.Query(queryId);
+            resultSetIds.next();
+            String id = resultSetIds.getString(1);
+            System.out.println(id);
+            
+            String query = "select sum(quantity) from " + tablePrefix + "stock_available where id_product = " + id + " and id_product_attribute <> 0";
+            ResultSet suma = db.Query(query);
+            suma.next();
+            String query2 = "update " + tablePrefix + "stock_available set quantity = " + suma.getString(1) + " where id_product = " + id + " and id_product_attribute = 0";
+            int resUpdate = db.updateQuery(query2);
+            MainGUI.logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Registros afectados por el UPDATE: " + resUpdate);
+        }
 
         // Cierra la conexión a la db
         if (db.getConnection() != null) {
