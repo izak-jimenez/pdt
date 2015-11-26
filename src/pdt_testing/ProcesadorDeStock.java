@@ -84,9 +84,13 @@ public class ProcesadorDeStock extends SwingWorker<Void, String> {
         
         // quantity = 0
         String queryUpdateToZeros = "update " + tablePrefix + "stock_available set quantity = 0 where quantity <> 0";
+        db.getConnection().setAutoCommit(false);// Inicia la transacción
         int resUpdateZeros = db.updateQuery(queryUpdateToZeros);
-        MainGUI.logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Registros afectados por el UPDATE: " + resUpdateZeros);
-
+        db.getConnection().commit();// Finaliza la transacción
+        MainGUI.logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Se cambiaron " + resUpdateZeros + " registros a 0.");
+        
+        int registrosCantidades = 0;
+        int registrosSuma = 0;
         for (int i = 0; i < productoRef.size(); i++) {
             String querySelect = "Select id_product, id_product_attribute\n"
                     + "from " + tablePrefix + "product_attribute\n"
@@ -95,7 +99,7 @@ public class ProcesadorDeStock extends SwingWorker<Void, String> {
             db.getConnection().setAutoCommit(false);// Inicia la transacción
             ResultSet updateProductSelect = db.Query(querySelect);
             updateProductSelect.next();
-            System.out.println("Resultset: " + updateProductSelect.getString(1) + " " + updateProductSelect.getString(2));
+            //System.out.println("Resultset: " + updateProductSelect.getString(1) + " " + updateProductSelect.getString(2));
             String queryUpdate = "update " + tablePrefix + "stock_available\n"
                     + "set quantity = " + Integer.parseInt(productoCantidad.get(i).toString()) + "\n"
                     + "where id_product = " + updateProductSelect.getString(1) + " and id_product_attribute = " + updateProductSelect.getString(2);
@@ -104,34 +108,41 @@ public class ProcesadorDeStock extends SwingWorker<Void, String> {
             produList.add(updateProductSelect.getString(1));
 
             int updateOrderUpdate = db.updateQuery(queryUpdate);
-            MainGUI.logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Registros afectados por el UPDATE: " + updateOrderUpdate);
+            registrosCantidades = registrosCantidades + updateOrderUpdate;
+            //MainGUI.logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Registros afectados por el UPDATE: " + updateOrderUpdate);
 
             db.getConnection().commit();// Finaliza la transacción
         }
+        MainGUI.logScreen.append("\n" + new Timestamp(new Date().getTime()) + " No. de registros con cantidades modificadas: " + registrosCantidades);
         
+        System.out.println("productos.getLength() = " + productos.getLength());
         // hace el atributo = 0
-        for (int i = 0; i < productos.getLength(); i++) {
+        for (int i = 0; i < productoRef.size(); i++) {
             String queryId = "Select id_product from " + tablePrefix + "product_attribute where reference = " + "'" + productoRef.get(i).toString() + "'";
+            db.getConnection().setAutoCommit(false);// Inicia la transacción
             ResultSet resultSetIds = db.Query(queryId);
             resultSetIds.next();
             String id = resultSetIds.getString(1);
-            System.out.println(id);
+            //System.out.println(id);
             
             String query = "select sum(quantity) from " + tablePrefix + "stock_available where id_product = " + id + " and id_product_attribute <> 0";
             ResultSet suma = db.Query(query);
             suma.next();
             String query2 = "update " + tablePrefix + "stock_available set quantity = " + suma.getString(1) + " where id_product = " + id + " and id_product_attribute = 0";
             int resUpdate = db.updateQuery(query2);
-            MainGUI.logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Registros afectados por el UPDATE: " + resUpdate);
+            registrosSuma = registrosSuma + resUpdate;
+            //MainGUI.logScreen.append("\n" + new Timestamp(new Date().getTime()) + " Registros afectados por el UPDATE: " + resUpdate);
+            db.getConnection().commit();// Finaliza la transacción
         }
+        MainGUI.logScreen.append("\n" + new Timestamp(new Date().getTime()) + " No. de registros con cantidades sumadas: " + registrosSuma);
 
         // Cierra la conexión a la db
         if (db.getConnection() != null) {
             db.getConnection().close();
         }
 
-        System.out.println(productoRef);
-        System.out.println(productoCantidad);
+        //System.out.println(productoRef);
+        //System.out.println(productoCantidad);
     }
 
     @Override
